@@ -1,0 +1,11 @@
+Django==4.2.7
+djangorestframework
+scikit-learn
+langchain
+langchain-community
+transformers
+torch
+huggingface-hub
+scikit-learn
+transformers
+torch
