@@ -1,14 +1,31 @@
-from django.contrib import admin
-from .models import Document, Question
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
+from .models import Question
+from .services.qa_pipeline import QAPipeline
 
 
-@admin.register(Document)
-class DocumentAdmin(admin.ModelAdmin):
-    list_display = ("title", "created_at", "tags")
-    search_fields = ("title", "content", "tags")
+@api_view(["POST","GET"])
+def ask_question(request):
+    question_text = request.data.get("question")
 
+    if not question_text:
+        return Response(
+            {"error": "Question field is required"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
-@admin.register(Question)
-class QuestionAdmin(admin.ModelAdmin):
-    list_display = ("question_text", "created_at")
-    readonly_fields = ("answer_text", "retrieved_context")
+    pipeline = QAPipeline()
+    answer, context = pipeline.run(question_text)
+
+    Question.objects.create(
+        question_text=question_text,
+        answer_text=answer,
+        retrieved_context=context
+    )
+
+    return Response({
+        "question": question_text,
+        "answer": answer
+    })
