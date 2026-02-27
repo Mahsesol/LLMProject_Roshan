@@ -20,28 +20,6 @@ The architecture follows a clean **service-based structure** and a proper RAG wo
 
 ---
 
-##  RAG Pipeline Architecture
-
-```
-User Question
-      ↓
-TF-IDF Vectorization
-      ↓
-Cosine Similarity Ranking
-      ↓
-Top-K Relevant Documents
-      ↓
-LangChain PromptTemplate
-      ↓
-HuggingFace LLM (flan-t5-base)
-      ↓
-Generated Answer
-      ↓
-Stored in Database
-```
-
----
-
 ##  Project Structure
 
 ```
@@ -63,40 +41,10 @@ LLMProject_Roshan/
         ├── urls.py
         ├── migrations/
         └── services/
-            ├── retriever.py      # TF-IDF retrieval logic
-            ├── llm.py            # LangChain + LLM integration
-            └── qa_pipeline.py    # Full RAG pipeline
+            ├── retriever.py     
+            ├── llm.py           
+            └── qa_pipeline.py   
 ```
-
----
-
-##  Features by Phase
-
-### ✅ Phase 1 – Core Data & Admin
-- Document model (title, content, date, tags)
-- Question model (question, answer, timestamp)
-- Customized Django Admin:
-  - Search support
-  - Filtering
-  - Document summaries in list view
-- Dockerized environment
-
-### ✅ Phase 2 – Retrieval (Without LLM)
-- TF-IDF vectorization
-- Cosine similarity ranking
-- Top-K document retrieval
-
-### ✅ Phase 3 – LangChain Integration
-- PromptTemplate usage
-- LLMChain implementation
-- Free HuggingFace model (google/flan-t5-base)
-- Context-based answer generation
-
-### ✅ Phase 4 – Final Delivery
-- Docker setup
-- Clean architecture
-- Services separation
-- Clear documentation
 
 ---
 
@@ -113,14 +61,14 @@ LLMProject_Roshan/
 
 ##  Installation & Run
 
-### 1️⃣ Clone the repository
+### Clone the repository
 
 ```bash
 git clone https://github.com/your-username/LLMProject_Roshan.git
 cd LLMProject_Roshan
 ```
 
-### 2️⃣ Create `.env` file
+###  Create `.env` file
 
 Create a `.env` file in the project root:
 
@@ -128,7 +76,7 @@ Create a `.env` file in the project root:
 HUGGINGFACEHUB_API_TOKEN=your_token_here
 ```
 
-### 3️⃣ Run with Docker
+### Run with Docker
 
 ```bash
 docker compose up --build
@@ -184,16 +132,6 @@ POST /qa/ask/
 
 ---
 
-##  Why This Is a Proper RAG System
-
-✔ Retrieval is performed before generation  
-✔ Only relevant documents are passed to the LLM  
-✔ LLM answers based strictly on provided context  
-✔ Clean separation of concerns (services layer)  
-✔ Answers are persisted in database  
-
----
-
 ##  Example Flow
 
 1. Admin uploads 3 documents.
@@ -213,4 +151,3 @@ POST /qa/ask/
 - Add question history endpoint
 - Add automated tests
 
----
