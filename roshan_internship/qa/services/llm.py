@@ -1,11 +1,16 @@
 from transformers import pipeline
+#from langchain_community.llms import HuggingFacePipeline
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
+from langchain.llms import HuggingFacePipeline
 
+MODEL_NAME = "google/flan-t5-small"
 
-class LocalLLM:
-    def __init__(self):
-        model_name = "sshleifer/tiny-gpt2"
-        self.pipe = pipeline("text-generation", model=model_name)
+hf_pipeline = pipeline(
+    "text-generation",
+    model=MODEL_NAME,
+    max_length=256,
+    do_sample=False,
+)
 
-    def generate(self, prompt):
-        result = self.pipe(prompt, max_length=200)
-        return result[0]["generated_text"]
+llm = HuggingFacePipeline(pipeline=hf_pipeline)
