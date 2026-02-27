@@ -2,7 +2,8 @@ Django==4.2.7
 djangorestframework
 scikit-learn
 langchain
-langchain-community
+#langchain-community
+langchain==0.0.352
 transformers
 torch
 huggingface-hub

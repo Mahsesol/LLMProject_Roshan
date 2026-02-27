@@ -34,8 +34,15 @@ class QAPipeline:
     def run(self, question):
         context = self.retriever.retrieve(question)
 
-        answer = self.chain.invoke(
+        # answer = self.chain.invoke(
+        #     {"context": context, "question": question}
+        # )["text"]
+        result = self.chain.invoke(
             {"context": context, "question": question}
-        )["text"]
+        )
+
+        print("DEBUG RESULT:", result)
+
+        answer = result.get("text") or result.get("output_text") or str(result)
 
         return answer, context
