@@ -1,24 +1,29 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from roshan_internship.qa.models import Document
+from ..models import Document
 
 
-class TfidfRetriever:
-
-    def __init__(self):
-        self.vectorizer = TfidfVectorizer(stop_words="english")
-
+class DocumentRetriever:
     def retrieve(self, query, top_k=3):
-        documents = Document.objects.all()
+        documents = list(Document.objects.all())
 
-        if not documents.exists():
-            return []
+        if not documents:
+            return ""
 
         corpus = [doc.content for doc in documents]
-        tfidf_matrix = self.vectorizer.fit_transform(corpus)
-        query_vec = self.vectorizer.transform([query])
 
-        similarities = cosine_similarity(query_vec, tfidf_matrix).flatten()
-        ranked_indices = similarities.argsort()[-top_k:][::-1]
+        vectorizer = TfidfVectorizer()
+        tfidf_matrix = vectorizer.fit_transform(corpus)
+        query_vector = vectorizer.transform([query])
 
-        return [documents[i] for i in ranked_indices]
+        similarities = cosine_similarity(query_vector, tfidf_matrix).flatten()
+        top_indices = similarities.argsort()[-top_k:][::-1]
+
+        selected_docs = [documents[i] for i in top_indices]
+
+        context = "\n\n".join(
+            f"Title: {doc.title}\nContent: {doc.content}"
+            for doc in selected_docs
+        )
+
+        return context
