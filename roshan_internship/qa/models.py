@@ -7,6 +7,11 @@ class Document(models.Model):
     tags = models.CharField(max_length=255, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=["created_at"]),
+        ]
+
     def __str__(self):
         return self.title
 
