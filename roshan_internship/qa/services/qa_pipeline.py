@@ -1,32 +1,41 @@
-from .retriever import TfidfRetriever
-from .llm import LocalLLM
+from langchain_core.prompts import PromptTemplate
+from langchain.chains import LLMChain
+
+from .retriever import DocumentRetriever
+from .llm import llm
 
 
 class QAPipeline:
-
     def __init__(self):
-        self.retriever = TfidfRetriever()
-        self.llm = LocalLLM()
+        self.retriever = DocumentRetriever()
 
-    def run(self, question_text: str):
-        documents = self.retriever.retrieve(question_text)
+        self.prompt = PromptTemplate(
+            input_variables=["context", "question"],
+            template="""
+                        You are a helpful assistant.
+                        Answer only using the provided context.
+                        If the answer is not in the context, say you do not know.
+                        
+                        Context:
+                        {context}
+                        
+                        Question:
+                        {question}
+                        
+                        Answer:
+                        """
+        )
 
-        context = "\n\n".join([doc.content for doc in documents])
+        self.chain = LLMChain(
+            llm=llm,
+            prompt=self.prompt
+        )
 
-        prompt = f"""
-You are a helpful assistant.
-Answer only using the provided context.
-If the answer is not in the context, say you do not know.
+    def run(self, question):
+        context = self.retriever.retrieve(question)
 
-Context:
-{context}
-
-Question:
-{question_text}
-
-Answer:
-"""
-
-        answer = self.llm.generate(prompt)
+        answer = self.chain.invoke(
+            {"context": context, "question": question}
+        )["text"]
 
         return answer, context
