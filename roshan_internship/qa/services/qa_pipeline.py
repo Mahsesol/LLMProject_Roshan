@@ -2,7 +2,7 @@ from langchain_core.prompts import PromptTemplate
 from langchain.chains import LLMChain
 
 from .retriever import DocumentRetriever
-from .llm import llm
+from .llm import get_llm
 
 
 class QAPipeline:
@@ -15,21 +15,18 @@ class QAPipeline:
                         You are a helpful assistant.
                         Answer only using the provided context.
                         If the answer is not in the context, say you do not know.
-                        
+
                         Context:
                         {context}
-                        
+
                         Question:
                         {question}
-                        
+
                         Answer:
-                        """
+                        """,
         )
 
-        self.chain = LLMChain(
-            llm=llm,
-            prompt=self.prompt
-        )
+        self.chain = LLMChain(llm=get_llm(), prompt=self.prompt)
 
     def run(self, question):
         context = self.retriever.retrieve(question)
@@ -37,9 +34,7 @@ class QAPipeline:
         # answer = self.chain.invoke(
         #     {"context": context, "question": question}
         # )["text"]
-        result = self.chain.invoke(
-            {"context": context, "question": question}
-        )
+        result = self.chain.invoke({"context": context, "question": question})
 
         print("DEBUG RESULT:", result)
 

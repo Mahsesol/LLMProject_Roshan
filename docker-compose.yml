@@ -6,5 +6,9 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
+      - huggingface_cache:/root/.cache/huggingface
     ports:
       - "8000:8000"
+
+volumes:
+  huggingface_cache:

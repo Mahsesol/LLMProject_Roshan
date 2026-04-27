@@ -1,16 +1,21 @@
-from transformers import pipeline
-#from langchain_community.llms import HuggingFacePipeline
-from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
+# qa/services/llm.py
+from transformers import pipeline as hf_pipeline_factory
 from langchain.llms import HuggingFacePipeline
+from langchain.prompts import PromptTemplate
 
 MODEL_NAME = "google/flan-t5-small"
 
-hf_pipeline = pipeline(
-    "text-generation",
-    model=MODEL_NAME,
-    max_length=256,
-    do_sample=False,
-)
+_llm = None
 
-llm = HuggingFacePipeline(pipeline=hf_pipeline)
+
+def get_llm():
+    global _llm
+    if _llm is None:
+        hf_pipe = hf_pipeline_factory(
+            "text2text-generation",  # flan-t5 is seq2seq, not text-generation
+            model=MODEL_NAME,
+            max_length=256,
+            do_sample=False,
+        )
+        _llm = HuggingFacePipeline(pipeline=hf_pipe)
+    return _llm
