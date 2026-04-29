@@ -1,3 +1,4 @@
+# /LLMProject_Roshan/roshan_internship/qa/admin.py
 from django.contrib import admin
 from .models import Document, Question
 

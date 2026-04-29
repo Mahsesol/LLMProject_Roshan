@@ -1,0 +1,107 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyd
+*.orig
+*.log
+*.pot
+*.mo
+*.swp
+*.swo
+
+# Virtual env
+venv/
+.venv/
+env/
+ENV/
+.python-version
+
+# Pipenv
+Pipfile.lock
+
+# Poetry
+.poetry/
+poetry.lock
+
+# =========================
+# Django
+# =========================
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+static/
+logs/
+*.db
+
+# Django secret files
+*.env
+.env.*
+!.env.example
+
+# Migrations
+ */migrations/*
+ !*/migrations/__init__.py
+
+# =========================
+# Editor & IDE
+# =========================
+.vscode/
+.idea/
+*.code-workspace
+
+# =========================
+# Docker
+# =========================
+docker-data/
+docker-volume/
+*.pid
+*.seed
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Cache / Models / Checkpoints
+# =========================
+cache/
+checkpoints/
+*.ckpt
+*.pt
+*.bin
+*.h5
+*.onnx
+
+# HuggingFace cache
+~/.cache/huggingface/
+huggingface/
+hf_cache/
+transformers_cache/
+
+# LangChain / Vector DB
+chroma/
+chroma_db/
+vectorstore/
+indices/
+index/
+*.faiss
+
+
+build/
+dist/
+*.egg-info/
+*.egg
+MANIFEST
+
+
+*.bak
+*.tmp
+tmp/
+temp/
