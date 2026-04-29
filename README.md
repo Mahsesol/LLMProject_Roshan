@@ -22,11 +22,14 @@ The architecture follows a clean **service-based structure** and a proper RAG wo
 
 ##  Project Structure
 
+
 ```
 LLMProject_Roshan/
 ├── Dockerfile
 ├── docker-compose.yml
 ├── manage.py
+├── models/                  
+|    └── flan-t5-small         # For local models (Flan-T5 small model)
 ├── requirements.txt
 ├── db.sqlite3
 └── roshan_internship/
